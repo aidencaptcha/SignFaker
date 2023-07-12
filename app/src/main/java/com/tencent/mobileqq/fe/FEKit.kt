@@ -68,7 +68,7 @@ object FEKit {
     fun changeUin(uin: Long) {
         UserAction.setQQ(uin.toString())
         QSecConfig.business_uin = uin.toString()
+        Dtn.initUin(uin.toString())
         log("改变Uin = $uin")
-
     }
 }

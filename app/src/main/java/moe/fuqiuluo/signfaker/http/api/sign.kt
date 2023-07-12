@@ -1,5 +1,6 @@
 package moe.fuqiuluo.signfaker.http.api
 
+import com.tencent.mobileqq.fe.FEKit
 import com.tencent.mobileqq.qsec.qsecurity.QSec
 import com.tencent.mobileqq.qsec.qsecurity.QSecConfig
 import io.ktor.server.routing.Routing
@@ -52,6 +53,8 @@ private data class Sign(
 )
 
 private suspend fun PipelineContext<Unit, ApplicationCall>.requestSign(cmd: String, uin: String, qua: String, seq: Int, buffer: ByteArray, qimei36: String = QSecConfig.business_q36) {
+    FEKit.changeUin(uin.toLong())
+
     fun int32ToBuf(i: Int): ByteArray {
         val out = ByteArray(4)
         out[3] = i.toByte()
