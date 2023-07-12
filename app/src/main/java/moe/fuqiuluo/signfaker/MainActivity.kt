@@ -16,6 +16,7 @@ import com.tencent.mobileqq.channel.ChannelProxy
 import com.tencent.mobileqq.dt.app.Dtc
 import com.tencent.mobileqq.fe.FEKit
 import com.tencent.mobileqq.qsec.qsecurity.QSecConfig
+import com.tencent.mobileqq.sign.QQSecuritySign
 import com.tencent.qphone.base.BaseConstants
 import com.tencent.qphone.base.util.CodecWarpper
 import kotlinx.coroutines.GlobalScope
@@ -61,9 +62,22 @@ class MainActivity : AppCompatActivity() {
         if (isInit.compareAndSet(false, true)) {
             GlobalScope.launch {
                 initServer()
-                initCodec()
+                //initCodec()
                 initFEKit()
+                initCommand()
             }
+        }
+    }
+
+    private fun initCommand() {
+        send.setOnClickListener {
+            TextLogger.input(">>> ${input.text}")
+            val command = input.text.toString()
+            if (command == "refresh_token" || command == "token" || command == "request_token") {
+                QQSecuritySign.requestToken()
+                log("Call QQSecuritySign.requestToken()")
+            }
+            input.setText("")
         }
     }
 
@@ -144,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /*
     private fun initCodec() {
         val codec = object: CodecWarpper() {
             override fun onInvalidData(i2: Int, i3: Int, str: String) {
@@ -193,5 +208,5 @@ class MainActivity : AppCompatActivity() {
         hashSet.add("trpc.qqlog.qqlog_push.Portal.SsoPullReportRule")
         hashSet.add("trpc.login.account_logic.AccountLogicService.SsoThirdPartQueryEncryptedBind")
         CodecWarpper.nativeInitNoLoginWhiteList(hashSet)
-    }
+    }*/
 }
